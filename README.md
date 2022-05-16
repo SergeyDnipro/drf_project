@@ -1,2 +1,2 @@
 # drf_project
-drf_test
+Django rest form
