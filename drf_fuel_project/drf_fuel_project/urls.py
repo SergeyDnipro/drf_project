@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# from fuel_search.views.stationViews import GasStationNumberSerializerView
+from fuel_search.views.CityViews import CitySerializerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('city/<str:city_name>', CitySerializerView.as_view()),
+#    path('station/<str:station_number>', GasStationNumberSerializerView.as_view())
 ]
