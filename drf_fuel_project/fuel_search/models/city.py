@@ -1,12 +1,11 @@
-import uuid
 from django.db import models
+from fuel_search.models.base_model import BaseModel
 
 
-class City(models.Model):
-    city_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    city_name = models.CharField(max_length=50, unique=True)
+class City(BaseModel):
+    name = models.CharField(max_length=50, unique=True, db_index=True)
     image = models.ImageField(blank=True, null=True)
     description = models.TextField(blank=True, null=True, max_length=300)
 
     def __str__(self):
-        return f'{self.city_name}'
+        return self.name
