@@ -1,31 +1,28 @@
-import uuid
 from django.db import models
 from fuel_search.models.fuel import Fuel
 from fuel_search.models.city import City
+from fuel_search.models.base_model import BaseModel
 
 
-class GasStation(models.Model):
-
-    station_number = models.SmallIntegerField(default=1, unique=True)
-    station_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-#    location = models.ForeignKey(City, on_delete=models.CASCADE, null=False, related_name='location')
-    fuel_type = models.ManyToManyField(Fuel, through='StationSupply')
+class GasStation(BaseModel):
+    number = models.SmallIntegerField(unique=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, related_name='stations')
+    fuels = models.ManyToManyField(Fuel, through='Supply')
     description = models.TextField(blank=True, null=True, max_length=300)
 
     def __str__(self):
-        return f'{self.station_number} {self.station_id}'
+        return f'{self.number} {self.id}'
 
 
-class StationSupply(models.Model):
-    gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE, related_name='station')
-    location = models.ForeignKey(City, on_delete=models.CASCADE, null=False, related_name='location')
-    fuel_t = models.ForeignKey(Fuel, on_delete=models.CASCADE, related_name='fuel_types')
+class Supply(models.Model):
+    gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE, related_name='supplies')
+    fuel = models.ForeignKey(Fuel, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0.0, max_digits=9, decimal_places=2, help_text="In USD")
 
     class Meta:
-        unique_together = (('location', 'fuel_t', 'gas_station'),)
-        ordering = ('location__city_name', 'gas_station__station_number')
+        unique_together = (('fuel', 'gas_station'), )
+        ordering = ('gas_station__number', )
 
     def __str__(self):
-        return f' Номер заправки: {self.gas_station.station_number} - Вид топлива: {self.fuel_t.type_fuel}' \
-               f' - Цена: {self.fuel_t.price} USD '
-
+        return f' Номер заправки: {self.gas_station.number} - Вид топлива: {self.fuel.type}' \
+               f' - Цена: {self.price} USD'
