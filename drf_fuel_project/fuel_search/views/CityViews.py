@@ -9,4 +9,3 @@ class CityView(viewsets.ReadOnlyModelViewSet):
 
     lookup_field = 'name__iexact'
     lookup_url_kwarg = 'name'
-

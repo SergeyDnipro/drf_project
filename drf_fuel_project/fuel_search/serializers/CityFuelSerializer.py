@@ -3,9 +3,9 @@ from fuel_search.models.gas_station import Supply
 from decimal import Decimal
 
 
-class StationSupplySerializer(serializers.ModelSerializer):
+class CityFuelSerializer(serializers.ModelSerializer):
+    gas_station = serializers.CharField(source='gas_station.number')
     fuel = serializers.CharField(source='fuel.type')
-
     price_in_uah = serializers.SerializerMethodField()
 
     @staticmethod
@@ -15,6 +15,7 @@ class StationSupplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Supply
         fields = (
+            'id',
             'gas_station',
             'fuel',
             'price',
