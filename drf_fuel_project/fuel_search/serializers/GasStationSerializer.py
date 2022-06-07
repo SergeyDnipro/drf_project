@@ -10,6 +10,7 @@ class GasStationSerializer(serializers.ModelSerializer):
         model = GasStation
         fields = (
             'id',
+            'number',
             'supplies',
             'city',
             'description',

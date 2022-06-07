@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from fuel_search.models.gas_station import Supply
+from fuel_search.models.gas_station import Supply, GasStation
 from decimal import Decimal
 
 
-class StationSupplySerializer(serializers.ModelSerializer):
-    fuel = serializers.CharField(source='fuel.type')
-
+class FuelStationSerializer(serializers.ModelSerializer):
+    gas_station = serializers.CharField(source='gas_station.number')
+    city = serializers.CharField(source='gas_station.description')
     price_in_uah = serializers.SerializerMethodField()
 
     @staticmethod
@@ -16,7 +16,7 @@ class StationSupplySerializer(serializers.ModelSerializer):
         model = Supply
         fields = (
             'gas_station',
-            'fuel',
+            'city',
             'price',
             'price_in_uah',
         )
