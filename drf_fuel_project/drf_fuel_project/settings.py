@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'fuel_search',
     'django_extensions',
     'rest_framework',
+    'knox',
 ]
 
 MIDDLEWARE = [
