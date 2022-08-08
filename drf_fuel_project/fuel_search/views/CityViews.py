@@ -1,12 +1,13 @@
 from rest_framework import viewsets
 from fuel_search.serializers.CitySerializer import CitySerializer
 from fuel_search.models.city import City
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 
 class CityView(viewsets.ReadOnlyModelViewSet):
 
     permission_classes = [
-        IsAuthenticated
+        IsAdminUser,
     ]
 
     serializer_class = CitySerializer
